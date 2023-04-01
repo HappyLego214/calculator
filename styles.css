@@ -50,3 +50,7 @@ div {
     align-items: center;
     margin: 8px;
 }
+
+.grid-item:hover {
+    background-color: #D3D3D3;
+}
