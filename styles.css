@@ -24,18 +24,28 @@ div {
 }
 
 .display-history {
-    text-align: right;
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 50px;
+    height: 45px;
 }
 
 .display-inputs {
-    text-align: right;
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 50px;
+    height: 45px;
+
 }
 
 .display-preview {
-    text-align: right;;
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 50px;
+    height: 45px;
 }
 
 .grid-menu {
