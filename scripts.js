@@ -3,8 +3,8 @@ const historyInput = document.querySelector('.display-history');
 const numbers = document.querySelectorAll('.data-number');
 const operators = document.querySelectorAll('.data-operator');
 
-let firstValue = null;
-let secondValue = null;
+let firstValue = "";
+let secondValue = "";
 let operation = "";
 
 let historyValue = "";
@@ -21,17 +21,23 @@ operators.forEach((operator => {
     operator.addEventListener('click', () => {
         if (operator.textContent == "C") {
             clearInputs();
-        } else if (operator.textContent == "+") {
-            firstValue = parseInt(displayValue);
-            historyValue = parseInt(firstValue);
+        } else if (operator.textContent == "CE") {
+            clearRecentInput();
+        } else if (operator.textContent == "=") {
+            secondValue = parseFloat(displayValue);
+            historyValue = parseFloat(secondValue);
+            updateDisplay();
+            updateHistory();
+            operate(firstValue, secondValue, operation);
+        } else {
+            firstValue = parseFloat(displayValue);
+            secondValue = "";
+            historyValue = parseFloat(firstValue);
             operation = operator.textContent;
             displayValue = "";
             updateDisplay();
             updateHistory();
-        } else if (operator.textContent == "=") {
-            secondValue = parseInt(displayValue);
-            operate(firstValue, secondValue, operation);
-        } 
+        }
     });
 }));
 
@@ -45,12 +51,20 @@ function clearInputs() {
     updateDisplay();
 }
 
+function clearRecentInput() {
+    let rm = displayValue.toString();
+    let z = rm.slice(0, -1);
+    console.log(z);
+    displayValue = z;
+    updateDisplay();
+}
+
 function updateDisplay() {
     inputs.textContent = displayValue;
 }
 
 function updateHistory() {
-    historyInput.textContent = firstValue + (" " + operation);
+    historyInput.textContent = firstValue + (" " + operation + " ") + secondValue;
 }
 
 function operate(x, y, z) {
@@ -62,32 +76,42 @@ function operate(x, y, z) {
         return multiplication(x, y);
     } else if (z == "/") {
         return division(x, y);
+    } else if (z == "%") {
+        return percentage(x, y);
     }
 }
 
 function addition(x,y) {
     let sum = x + y;
-    console.log(sum);
     displayValue = sum;
     updateDisplay();
 }
 
 function subtraction(x,y) {
     let difference = x - y;
-    return difference
+    displayValue = difference;
+    updateDisplay();
 }
 
 function multiplication(x,y) {
     let product = x * y;
-    return product
+    displayValue = product;
+    updateDisplay();
 }
 
 function division(x,y) {
-    if (y = 0) {
-        alert("That's Not Possible!");
+    if (y == 0) {
+        alert("Not Possible To Divide By 0!");
+        clearInputs();
     } else {
     let quotient = x / y;
-    return quotient
+    displayValue = quotient;
+    updateDisplay();
     }
-    
+}
+
+function percentage(x, y) {
+    let percent = x / 100 * y
+    displayValue = percent + "%";
+    updateDisplay();
 }
