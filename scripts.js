@@ -1,11 +1,13 @@
 // issue with double clicking operation buttons.
 // issue with replacing numbers into NaN if changing operations once first input value entered.
-// issue with multiple inputs being entered on decimal point. 
+// issue with multiple inputs being entered on decimal point.  --> FIXED
 // issue with decimal point being inputted even without number. --> FIXED
+// issue with multiple clicks on equals operating again and again. 
 
 // feature to add -> once two values are provided, if user clicks another operation instead of equals. First two values must be output result and shifted to new operation.
 // feature to add -> positive & negative integers.
 // feature to add -> brackets.
+// feature to add -> keyboard support. 
 // feature to add -> preview section.
 
 const inputs = document.querySelector('.display-inputs');
@@ -17,9 +19,9 @@ const type = document.querySelectorAll('.data-type');
 let firstValue = "";
 let secondValue = "";
 let operation = "";
-
 let historyValue = "";
 let displayValue = "";
+let currentlyOperating = false;
 
 type.forEach((type) => {
     type.addEventListener('click', () => {
@@ -50,22 +52,36 @@ operators.forEach((operator => {
         } else if (operator.textContent == ".") {
             toDecimal();
         } else if (operator.textContent == "=") {
-            secondValue = parseFloat(displayValue);
-            historyValue = parseFloat(secondValue);
-            updateDisplay();
-            updateHistory();
-            operate(firstValue, secondValue, operation);
+            operating(); 
         } else {
-            firstValue = parseFloat(displayValue);
-            secondValue = "";
-            historyValue = parseFloat(firstValue);
-            operation = operator.textContent;
-            displayValue = "";
-            updateDisplay();
-            updateHistory();
+            evaluating(operator.textContent);
         }
     });
 }));
+
+function operating() {
+    if (currentlyOperating == false) {
+        console.log("check");
+    } else {
+        secondValue = parseFloat(displayValue);
+        historyValue = parseFloat(secondValue);
+        updateDisplay();
+        updateHistory();
+        operate(firstValue, secondValue, operation);
+        currentlyOperating = false;
+    }
+}
+
+function evaluating(operator) {
+    firstValue = parseFloat(displayValue);
+    secondValue = "";
+    historyValue = parseFloat(firstValue);
+    displayValue = "";
+    operation = operator;
+    updateDisplay();
+    updateHistory();
+    currentlyOperating = true;
+}
 
 function clearInputs() {
     displayValue = "";
@@ -79,8 +95,7 @@ function clearInputs() {
 
 function clearRecentInput() {
     let rm = displayValue.toString();
-    let z = rm.slice(0, -1);
-    displayValue = z;
+    displayValue = rm.slice(0, -1);
     updateDisplay();
 }
 
