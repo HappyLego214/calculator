@@ -1,7 +1,7 @@
 // issue with double clicking operation buttons.
 // issue with replacing numbers into NaN if changing operations once first input value entered.
 // issue with multiple inputs being entered on decimal point. 
-// issue with decimal point being inputted even without number.
+// issue with decimal point being inputted even without number. --> FIXED
 
 // feature to add -> once two values are provided, if user clicks another operation instead of equals. First two values must be output result and shifted to new operation.
 // feature to add -> positive & negative integers.
@@ -24,9 +24,7 @@ let displayValue = "";
 type.forEach((type) => {
     type.addEventListener('click', () => {
         if (type.textContent = ".") {
-           if (displayValue.includes(".")) {
-                console.log("check");
-           } else {
+           if (!displayValue.includes(".")) {
             displayValue += type.textContent;
             updateDisplay();
            }
@@ -36,8 +34,10 @@ type.forEach((type) => {
 
 numbers.forEach((number) => {
     number.addEventListener('click', () => {
+        if (displayValue.length < 10) {
         displayValue += number.textContent
         updateDisplay();
+        }
     });
 });
 
@@ -80,7 +80,6 @@ function clearInputs() {
 function clearRecentInput() {
     let rm = displayValue.toString();
     let z = rm.slice(0, -1);
-    console.log(z);
     displayValue = z;
     updateDisplay();
 }
