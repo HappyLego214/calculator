@@ -1,8 +1,9 @@
-// issue with double clicking operation buttons.
-// issue with replacing numbers into NaN if changing operations once first input value entered.
+// issue with double clicking operation buttons. --> FIXED
+// issue with replacing numbers into NaN if changing operations once first input value entered. --> FIXED
 // issue with multiple inputs being entered on decimal point.  --> FIXED
 // issue with decimal point being inputted even without number. --> FIXED
-// issue with multiple clicks on equals operating again and again. 
+// issue with multiple clicks on equals operating again and again. --> FIXED
+// issue with decimal points having a type error. --> FIXED
 
 // feature to add -> once two values are provided, if user clicks another operation instead of equals. First two values must be output result and shifted to new operation.
 // feature to add -> positive & negative integers.
@@ -26,7 +27,7 @@ let currentlyOperating = false;
 type.forEach((type) => {
     type.addEventListener('click', () => {
         if (type.textContent = ".") {
-           if (!displayValue.includes(".")) {
+           if (!displayValue.toString().includes(".")){
             displayValue += type.textContent;
             updateDisplay();
            }
@@ -73,14 +74,21 @@ function operating() {
 }
 
 function evaluating(operator) {
-    firstValue = parseFloat(displayValue);
-    secondValue = "";
-    historyValue = parseFloat(firstValue);
-    displayValue = "";
-    operation = operator;
-    updateDisplay();
-    updateHistory();
-    currentlyOperating = true;
+    if (currentlyOperating == false) {
+        firstValue = parseFloat(displayValue);
+        secondValue = "";
+        historyValue = parseFloat(firstValue);
+        displayValue = "";
+        operation = operator;
+        updateDisplay();
+        updateHistory();
+        currentlyOperating = true;
+    } else {
+        operation = operator;
+        updateDisplay();
+        updateHistory();
+        console.log("check");
+    }
 }
 
 function clearInputs() {
