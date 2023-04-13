@@ -5,11 +5,15 @@
 // issue with multiple clicks on equals operating again and again. --> FIXED
 // issue with decimal points having a type error. --> FIXED
 
-// feature to add -> once two values are provided, if user clicks another operation instead of equals. First two values must be output result and shifted to new operation.
+// feature to add -> once two values are provided, if user clicks another operation instead of equals. 
+// first two values must be output result and shifted to new operation. --> POSTPONED
+
 // feature to add -> positive & negative integers.
 // feature to add -> brackets.
-// feature to add -> keyboard support. 
+// feature to add -> keyboard support. --> POSTPONED
 // feature to add -> preview section.
+
+// secure character limits for input and outputs --> FIXED
 
 const inputs = document.querySelector('.display-inputs');
 const historyInput = document.querySelector('.display-history');
@@ -44,6 +48,12 @@ numbers.forEach((number) => {
     });
 });
 
+// WORK IN PROGRESS -- KEYBOARD INPUT
+function keyboardInput(e) {
+const check = document.querySelector(`button[data-key="${e.keyCode}"]`);
+console.log(check);
+}
+
 operators.forEach((operator => {
     operator.addEventListener('click', () => {
         if (operator.textContent == "C") {
@@ -53,17 +63,23 @@ operators.forEach((operator => {
         } else if (operator.textContent == ".") {
             toDecimal();
         } else if (operator.textContent == "=") {
-            operating(); 
+            if (displayValue == "") {
+                console.log("check")
+            } else {
+            operating();
+            } 
         } else {
+            if (displayValue == "") {
+                console.log("check");
+            } else {
             evaluating(operator.textContent);
+            }
         }
     });
 }));
 
 function operating() {
-    if (currentlyOperating == false) {
-        console.log("check");
-    } else {
+    if (currentlyOperating == true) {
         secondValue = parseFloat(displayValue);
         historyValue = parseFloat(secondValue);
         updateDisplay();
@@ -72,6 +88,12 @@ function operating() {
         currentlyOperating = false;
     }
 }
+
+// function checkingNaN() {
+//     if (displayValue == "") {
+//         console.log("check");
+//     }
+// }
 
 function evaluating(operator) {
     if (currentlyOperating == false) {
@@ -85,10 +107,8 @@ function evaluating(operator) {
         currentlyOperating = true;
     } else {
         operation = operator;
-        updateDisplay();
         updateHistory();
-        console.log("check");
-    }
+    } 
 }
 
 function clearInputs() {
@@ -97,6 +117,7 @@ function clearInputs() {
     firstValue = "";
     secondValue = "";
     operation = "";
+    currentlyOperating = false;
     updateHistory();
     updateDisplay();
 }
@@ -131,19 +152,19 @@ function operate(x, y, z) {
 
 function addition(x,y) {
     let sum = x + y;
-    displayValue = sum;
+    displayValue = Math.round(sum * 1000) / 1000;;
     updateDisplay();
 }
 
 function subtraction(x,y) {
     let difference = x - y;
-    displayValue = difference;
+    displayValue = Math.round(difference * 1000) / 1000;
     updateDisplay();
 }
 
 function multiplication(x,y) {
     let product = x * y;
-    displayValue = product;
+    displayValue = Math.round(product * 1000) / 1000;
     updateDisplay();
 }
 
@@ -153,7 +174,7 @@ function division(x,y) {
         clearInputs();
     } else {
     let quotient = x / y;
-    displayValue = quotient;
+    displayValue = Math.round(quotient * 1000) / 1000;
     updateDisplay();
     }
 }
