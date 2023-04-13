@@ -6,10 +6,10 @@
 // issue with decimal points having a type error. --> FIXED
 
 // feature to add -> once two values are provided, if user clicks another operation instead of equals. 
-// first two values must be output result and shifted to new operation. --> POSTPONED
+// first two values must be output result and shifted to new operation. --> CANCELLED
 
-// feature to add -> positive & negative integers.
-// feature to add -> brackets.
+// feature to add -> positive & negative integers. --> ADDED
+// feature to add -> brackets. 
 // feature to add -> keyboard support. --> POSTPONED
 // feature to add -> preview section.
 
@@ -30,11 +30,19 @@ let currentlyOperating = false;
 
 type.forEach((type) => {
     type.addEventListener('click', () => {
-        if (type.textContent = ".") {
+        if (type.textContent == ".") {
            if (!displayValue.toString().includes(".")){
             displayValue += type.textContent;
             updateDisplay();
            }
+        } else if (type.textContent == "+/-") {
+            if (!displayValue.toString().includes("-")) {
+                displayValue = "-" + displayValue 
+                updateDisplay();
+            } else {
+                displayValue = displayValue.replace('-','');
+                updateDisplay();
+            }
         }
     });
 });
@@ -123,8 +131,8 @@ function clearInputs() {
 }
 
 function clearRecentInput() {
-    let rm = displayValue.toString();
-    displayValue = rm.slice(0, -1);
+    let clr = displayValue.toString();
+    displayValue = clr.slice(0, -1);
     updateDisplay();
 }
 
@@ -139,11 +147,11 @@ function updateHistory() {
 function operate(x, y, z) {
     if(z === "+") {
         return addition(x, y);
-    } else if (z == "-") {
+    } else if (z == "−") {
         return subtraction(x, y);
-    } else if (z == "x") {
+    } else if (z == "×") {
         return multiplication(x, y);
-    } else if (z == "/") {
+    } else if (z == "÷") {
         return division(x, y);
     } else if (z == "%") {
         return percentage(x, y);
