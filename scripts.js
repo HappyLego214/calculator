@@ -9,12 +9,7 @@
 // first two values must be output result and shifted to new operation. --> CANCELLED
 
 // feature to add -> positive & negative integers. --> ADDED
-// feature to add -> preview section.
-// feature to add -> brackets. 
-
-// feature to add -> keyboard support. --> IN-PROGRESS 
-// - number support --> ADDED
-// - operator support --> IN-PROGRESS
+// feature to add -> keyboard support. --> ADDED
 
 // secure character limits for input and outputs --> FIXED
 
@@ -61,11 +56,30 @@ numbers.forEach((number) => {
 
 // WORK IN PROGRESS -- KEYBOARD INPUT
 window.addEventListener('keydown', (e) => {
-    let check = /^[0-9]+$/;
-    if (e.key.match(check)) {
-    displayValue += e.key;
-    updateDisplay();
-    } 
+    let numberRgx = /^[0-9]+$/;
+    if (e.key.match(numberRgx)) {
+        displayValue += e.key;
+        updateDisplay();
+        } 
+});
+
+window.addEventListener('keydown', (e) => {
+    let operatorRgx = /[+-/*]/
+    e.preventDefault();
+        if (!displayValue == "" && e.key.match(operatorRgx) && currentlyOperating == false) {
+            evaluating(operatorConversion(e.key));
+        } else if (e.key.match(operatorRgx)) {
+            operation = operatorConversion(e.key);
+            updateHistory();
+        }
+});
+
+window.addEventListener('keydown', (e) => {
+    if ((e.key == "=" || e.key == "Enter") && !displayValue == "" && currentlyOperating == true) {
+        operating();
+    } else if (e.key == "Backspace") {
+        clearRecentInput();
+    }
 });
 
 operators.forEach((operator => {
@@ -75,42 +89,45 @@ operators.forEach((operator => {
         } else if (operator.textContent == "CE") {
             clearRecentInput();
         } else if (operator.textContent == "=") {
-            if (!displayValue == "") {
+            if (!displayValue == "" && currentlyOperating == true) {
                 operating();
             } 
         } else {
-            if (!displayValue == "") {
+            if (!displayValue == "" && currentlyOperating == false) {
                 evaluating(operator.textContent);
-            }
+            } else {
+                operation = operator.textContent;
+                updateHistory();
+            } 
         }
     });
 }));
 
+function operatorConversion(operator) {
+    if (operator == "/") return "÷";
+    if (operator == "*") return "×";
+    if (operator == "+") return "+";
+    if (operator == "-") return "−";
+}
+
 function operating() {
-    if (currentlyOperating == true) {
-        secondValue = parseFloat(displayValue);
-        historyValue = parseFloat(secondValue);
-        updateDisplay();
-        updateHistory();
-        operate(firstValue, secondValue, operation);
-        currentlyOperating = false;
-    }
+    secondValue = parseFloat(displayValue);
+    historyValue = parseFloat(secondValue);
+    updateDisplay();
+    updateHistory();
+    operate(firstValue, secondValue, operation);
+    currentlyOperating = false;
 }
 
 function evaluating(operator) {
-    if (currentlyOperating == false) {
-        firstValue = parseFloat(displayValue);
-        secondValue = "";
-        historyValue = parseFloat(firstValue);
-        displayValue = "";
-        operation = operator;
-        updateDisplay();
-        updateHistory();
-        currentlyOperating = true;
-    } else {
-        operation = operator;
-        updateHistory();
-    } 
+    firstValue = parseFloat(displayValue);
+    secondValue = "";
+    historyValue = parseFloat(firstValue);
+    displayValue = "";
+    operation = operator;
+    updateDisplay();
+    updateHistory();
+    currentlyOperating = true;
 }
 
 function clearInputs() {
@@ -141,11 +158,11 @@ function updateHistory() {
 function operate(x, y, z) {
     if(z === "+") {
         return addition(x, y);
-    } else if (z == "−") {
+    } else if (z == "−" || z == "-") {
         return subtraction(x, y);
-    } else if (z == "×") {
+    } else if (z == "×" || z == "*") {
         return multiplication(x, y);
-    } else if (z == "÷") {
+    } else if (z == "÷" || z == "/") {
         return division(x, y);
     } else if (z == "%") {
         return percentage(x, y);
