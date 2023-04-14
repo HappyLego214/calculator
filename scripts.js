@@ -9,9 +9,12 @@
 // first two values must be output result and shifted to new operation. --> CANCELLED
 
 // feature to add -> positive & negative integers. --> ADDED
-// feature to add -> brackets. 
-// feature to add -> keyboard support. --> POSTPONED
 // feature to add -> preview section.
+// feature to add -> brackets. 
+
+// feature to add -> keyboard support. --> IN-PROGRESS 
+// - number support --> ADDED
+// - operator support --> IN-PROGRESS
 
 // secure character limits for input and outputs --> FIXED
 
@@ -57,10 +60,13 @@ numbers.forEach((number) => {
 });
 
 // WORK IN PROGRESS -- KEYBOARD INPUT
-function keyboardInput(e) {
-const check = document.querySelector(`button[data-key="${e.keyCode}"]`);
-console.log(check);
-}
+window.addEventListener('keydown', (e) => {
+    let check = /^[0-9]+$/;
+    if (e.key.match(check)) {
+    displayValue += e.key;
+    updateDisplay();
+    } 
+});
 
 operators.forEach((operator => {
     operator.addEventListener('click', () => {
@@ -68,19 +74,13 @@ operators.forEach((operator => {
             clearInputs();
         } else if (operator.textContent == "CE") {
             clearRecentInput();
-        } else if (operator.textContent == ".") {
-            toDecimal();
         } else if (operator.textContent == "=") {
-            if (displayValue == "") {
-                console.log("check")
-            } else {
-            operating();
+            if (!displayValue == "") {
+                operating();
             } 
         } else {
-            if (displayValue == "") {
-                console.log("check");
-            } else {
-            evaluating(operator.textContent);
+            if (!displayValue == "") {
+                evaluating(operator.textContent);
             }
         }
     });
@@ -96,12 +96,6 @@ function operating() {
         currentlyOperating = false;
     }
 }
-
-// function checkingNaN() {
-//     if (displayValue == "") {
-//         console.log("check");
-//     }
-// }
 
 function evaluating(operator) {
     if (currentlyOperating == false) {

@@ -27,7 +27,7 @@ div {
     display: flex;
     align-items: center;
     justify-content: end;
-    padding-right: 50px;
+    padding-right: 15px;
     height: 45px;
 }
 
@@ -35,7 +35,7 @@ div {
     display: flex;
     align-items: center;
     justify-content: end;
-    padding-right: 50px;
+    padding-right: 15px;
     height: 45px;
 
 }
