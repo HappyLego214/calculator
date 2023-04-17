@@ -4,12 +4,14 @@
 // issue with decimal point being inputted even without number. --> FIXED
 // issue with multiple clicks on equals operating again and again. --> FIXED
 // issue with decimal points having a type error. --> FIXED
+// issue with overflowing numbers.
 
 // feature to add -> once two values are provided, if user clicks another operation instead of equals. 
 // first two values must be output result and shifted to new operation. --> CANCELLED
 
 // feature to add -> positive & negative integers. --> ADDED
 // feature to add -> keyboard support. --> ADDED
+// feature to add -> automatic formatting of numbers --> ADDED
 
 // secure character limits for input and outputs --> FIXED
 
@@ -23,7 +25,7 @@ let firstValue = "";
 let secondValue = "";
 let operation = "";
 let historyValue = "";
-let displayValue = "";
+let displayValue = ""
 let currentlyOperating = false;
 
 type.forEach((type) => {
@@ -47,14 +49,11 @@ type.forEach((type) => {
 
 numbers.forEach((number) => {
     number.addEventListener('click', () => {
-        if (displayValue.length < 10) {
         displayValue += number.textContent
         updateDisplay();
-        }
     });
 });
 
-// WORK IN PROGRESS -- KEYBOARD INPUT
 window.addEventListener('keydown', (e) => {
     let numberRgx = /^[0-9]+$/;
     if (e.key.match(numberRgx)) {
@@ -132,6 +131,8 @@ function evaluating(operator) {
 
 function clearInputs() {
     displayValue = "";
+    inputs.textContent = "";
+    historyInput.textContent = "";
     historyValue = "";
     firstValue = "";
     secondValue = "";
@@ -148,11 +149,21 @@ function clearRecentInput() {
 }
 
 function updateDisplay() {
-    inputs.textContent = displayValue;
+    let convert = parseFloat(displayValue);
+    if (!displayValue == "" && (convert.toString().length < 500) && !(convert.toString().includes("e"))) {
+    inputs.textContent = convert.toLocaleString("en-US");
+    console.log("check");
+    } else {
+    inputs.textContent = convert;
+    }
 }
 
 function updateHistory() {
-    historyInput.textContent = firstValue + (" " + operation + " ") + secondValue;
+    // if ("") {
+    historyInput.textContent = firstValue.toLocaleString("en-US") + (" " + operation + " ") + secondValue.toLocaleString("en-US");
+    // } else {
+    // historyInput.textContent = firstValue.toExponential() + (" " + operation + " ") + secondValue.toExponential(); 
+    // }
 }
 
 function operate(x, y, z) {
@@ -171,19 +182,19 @@ function operate(x, y, z) {
 
 function addition(x,y) {
     let sum = x + y;
-    displayValue = Math.round(sum * 1000) / 1000;;
+    displayValue = (Math.round(sum * 1000) / 1000);
     updateDisplay();
 }
 
 function subtraction(x,y) {
     let difference = x - y;
-    displayValue = Math.round(difference * 1000) / 1000;
+    displayValue = (Math.round(difference * 1000) / 1000);
     updateDisplay();
 }
 
 function multiplication(x,y) {
     let product = x * y;
-    displayValue = Math.round(product * 1000) / 1000;
+    displayValue = (Math.round(product * 1000) / 1000);
     updateDisplay();
 }
 
@@ -193,7 +204,7 @@ function division(x,y) {
         clearInputs();
     } else {
     let quotient = x / y;
-    displayValue = Math.round(quotient * 1000) / 1000;
+    displayValue = (Math.round(quotient * 1000) / 1000);
     updateDisplay();
     }
 }
