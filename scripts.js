@@ -4,7 +4,7 @@
 // issue with decimal point being inputted even without number. --> FIXED
 // issue with multiple clicks on equals operating again and again. --> FIXED
 // issue with decimal points having a type error. --> FIXED
-// issue with overflowing numbers.
+// issue with overflowing numbers.  --> FIXED
 
 // feature to add -> once two values are provided, if user clicks another operation instead of equals. 
 // first two values must be output result and shifted to new operation. --> CANCELLED
@@ -150,20 +150,22 @@ function clearRecentInput() {
 
 function updateDisplay() {
     let convert = parseFloat(displayValue);
-    if (!displayValue == "" && (convert.toString().length < 500) && !(convert.toString().includes("e"))) {
+    if (!displayValue == "" && !(convert.toString().includes("e"))) {
     inputs.textContent = convert.toLocaleString("en-US");
-    console.log("check");
-    } else {
+    } else if (!displayValue == "") {
     inputs.textContent = convert;
+    } else {
+    inputs.textContent = "";
     }
 }
 
 function updateHistory() {
-    // if ("") {
+    if (!(firstValue.toString().includes("e")) && !(secondValue.toString().includes("e"))) {
+        console.log("AAA");
     historyInput.textContent = firstValue.toLocaleString("en-US") + (" " + operation + " ") + secondValue.toLocaleString("en-US");
-    // } else {
-    // historyInput.textContent = firstValue.toExponential() + (" " + operation + " ") + secondValue.toExponential(); 
-    // }
+    } else {
+    historyInput.textContent = firstValue + (" " + operation + " ") + secondValue
+    }
 }
 
 function operate(x, y, z) {

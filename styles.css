@@ -30,7 +30,7 @@ div {
     flex-direction: row-reverse;
     white-space: nowrap;
     align-items: center;
-    overflow: scroll;
+    overflow-x: scroll;
     height: 45px;
     padding-right: 15px;
 }
@@ -38,7 +38,7 @@ div {
 .display-inputs {
     display: flex;
     flex-direction: row-reverse;
-    overflow: scroll;
+    overflow-x: scroll;
     align-items: center;
     padding-right: 15px;
     height: 45px;
