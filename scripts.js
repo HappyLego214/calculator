@@ -161,7 +161,6 @@ function updateDisplay() {
 
 function updateHistory() {
     if (!(firstValue.toString().includes("e")) && !(secondValue.toString().includes("e"))) {
-        console.log("AAA");
     historyInput.textContent = firstValue.toLocaleString("en-US") + (" " + operation + " ") + secondValue.toLocaleString("en-US");
     } else {
     historyInput.textContent = firstValue + (" " + operation + " ") + secondValue
@@ -213,6 +212,6 @@ function division(x,y) {
 
 function percentage(x, y) {
     let percent = x / 100 * y
-    displayValue = percent + "%";
+    displayValue = parseFloat(percent);
     updateDisplay();
 }
